@@ -9,15 +9,48 @@ import matplotlib.pyplot as plt
 # Maze class
 class Maze:
     """
-    Random maze generator
+    A class to represent a maze
+
+    ...
+
+    Attributes
+    ----------
+    size : int
+        the size of the maze
+    complexity : float
+        the complexity of the maze
+    density : float
+        the density of the maze
+    maze : torch.Tensor
+        the maze
+
+    Methods
+    -------
+    _generate_maze()
+        Generates the maze
+    show_maze()
+        Renders the maze
     """
-    def __init__(self, size, complexity=.75, density=.75):
+    def __init__(self, size:int, complexity:float=.75, density:float=.75):
+        """
+        Parameters
+        ----------
+        size : int
+            the size of the maze
+        complexity : float
+            the complexity of the maze
+        density : float
+            the density of the maze
+        """
         self.size = size
         self.complexity = complexity
         self.density = density
-        self.maze = self.generate_maze()
+        self.maze = self._generate_maze()
 
-    def generate_maze(self):
+    def _generate_maze(self):
+        """
+        Generates the maze
+        """
         shape = (3, self.size, self.size)
         maze = torch.ones(shape, dtype=float)
         # Borders
@@ -51,6 +84,9 @@ class Maze:
         return maze
 
     def show_maze(self):
+        """
+        Renders the maze
+        """
         plt.figure(figsize=(10, 5))
         # Transpose maze to show it correctly
         plt.imshow(torch.einsum("cwh->whc", self.maze))
