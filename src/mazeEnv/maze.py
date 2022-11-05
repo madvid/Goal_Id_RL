@@ -47,9 +47,14 @@ class Maze:
         self.density = density
         self.maze = self._generate_maze()
 
-    def _generate_maze(self):
+    def _generate_maze(self)->torch.Tensor:
         """
         Generates the maze
+
+        Returns
+        -------
+        torch.Tensor
+            the maze
         """
         shape = (3, self.size, self.size)
         maze = torch.ones(shape, dtype=float)
@@ -79,7 +84,7 @@ class Maze:
                     y_, x_ = neighbours[torch.randint(len(neighbours), (1,))]
                     if maze[:, y_, x_].any():
                         maze[:, y_, x_] = 0
-                        maze[:, y_ + (y - y_) // 2, x_ + (x - x_) // 2] = 0
+                        maze[:, y_ + torch.div(y - y_, 2, rounding_mode='floor'), x_ + torch.div(x - x_, 2, rounding_mode='floor')] = 0
                         x, y = x_, y_
         return maze
 
